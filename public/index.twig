@@ -1,0 +1,13 @@
+<div>
+  {% if app.user %}
+    <p>Hello {{ app.user.username }}! Your email is {{ app.user.email }}</p>
+    <a href="{{ logout_path }}">Logout</a>
+  {% else %}
+    <ul>
+      <li><a href="{{ login_paths.facebook }}">Login with Facebook</a></li>
+      <li><a href="{{ login_paths.twitter }}">Login with Twitter</a></li>
+      <li><a href="{{ login_paths.google }}">Login with Google</a></li>
+      <li><a href="{{ login_paths.github }}">Login with GitHub</a></li>
+    </ul>
+  {% endif %}
+</div>

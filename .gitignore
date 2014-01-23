@@ -1,0 +1,14 @@
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+.sonar
+.htaccess
+.idea
+Icon?
+ehthumbs.db
+Thumbs.db
+vendor
+composer.lock
+composer.phar
