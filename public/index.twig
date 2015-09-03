@@ -1,6 +1,6 @@
 <div>
   {% if app.user %}
-    <p>Hello {{ app.user.username }}! Your email is {{ app.user.email }}</p>
+    <p>Hello {{ app.user.username }}! Your email is {{ app.user.email|default('"unknown"') }}</p>
     <a href="{{ logout_path }}">Logout</a>
   {% else %}
     <ul>
