@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__.'/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 $app = new Silex\Application();
 
@@ -15,6 +15,12 @@ $app->register(new Gigablah\Silex\OAuth\OAuthServiceProvider(), array(
             'secret' => FACEBOOK_API_SECRET,
             'scope' => array('email'),
             'user_endpoint' => 'https://graph.facebook.com/me'
+        ),
+        'Dropbox' => array(
+            'key' => DROPBOX_API_KEY,
+            'secret' => DROPBOX_API_SECRET,
+            'scope' => array(),
+            'user_endpoint' => 'https://api.dropbox.com/1/account/info'
         ),
         'Twitter' => array(
             'key' => TWITTER_API_KEY,
@@ -48,7 +54,7 @@ $app->register(new Silex\Provider\FormServiceProvider());
 
 // Provides session storage
 $app->register(new Silex\Provider\SessionServiceProvider(), array(
-    'session.storage.save_path' => __DIR__.'/../cache'
+    'session.storage.save_path' => __DIR__ . '/../cache'
 ));
 
 // Provides Twig template engine
@@ -98,6 +104,7 @@ $app->get('/', function () use ($app) {
     ));
 });
 
-$app->match('/logout', function () {})->bind('logout');
+$app->match('/logout', function () {
+})->bind('logout');
 
 $app->run();
