@@ -10,19 +10,19 @@ $app['debug'] = true;
 
 $app->register(new Gigablah\Silex\OAuth\OAuthServiceProvider(), array(
     'oauth.services' => array(
-        'facebook' => array(
+        'Facebook' => array(
             'key' => FACEBOOK_API_KEY,
             'secret' => FACEBOOK_API_SECRET,
             'scope' => array('email'),
             'user_endpoint' => 'https://graph.facebook.com/me'
         ),
-        'twitter' => array(
+        'Twitter' => array(
             'key' => TWITTER_API_KEY,
             'secret' => TWITTER_API_SECRET,
             'scope' => array(),
             'user_endpoint' => 'https://api.twitter.com/1.1/account/verify_credentials.json'
         ),
-        'google' => array(
+        'Google' => array(
             'key' => GOOGLE_API_KEY,
             'secret' => GOOGLE_API_SECRET,
             'scope' => array(
@@ -31,7 +31,7 @@ $app->register(new Gigablah\Silex\OAuth\OAuthServiceProvider(), array(
             ),
             'user_endpoint' => 'https://www.googleapis.com/oauth2/v1/userinfo'
         ),
-        'github' => array(
+        'GitHub' => array(
             'key' => GITHUB_API_KEY,
             'secret' => GITHUB_API_SECRET,
             'scope' => array('user:email'),
