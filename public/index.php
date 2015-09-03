@@ -4,6 +4,10 @@ require_once __DIR__.'/../vendor/autoload.php';
 
 $app = new Silex\Application();
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+$app['debug'] = true;
+
 $app->register(new Gigablah\Silex\OAuth\OAuthServiceProvider(), array(
     'oauth.services' => array(
         'facebook' => array(
@@ -86,17 +90,10 @@ $app->before(function (Symfony\Component\HttpFoundation\Request $request) use ($
 });
 
 $app->get('/', function () use ($app) {
-    $services = array_keys($app['oauth.services']);
-
     return $app['twig']->render('index.twig', array(
-        'login_paths' => array_map(function ($service) use ($app) {
-            return $app['url_generator']->generate('_auth_service', array(
-                'service' => $service,
-                '_csrf_token' => $app['form.csrf_provider']->generateCsrfToken('oauth')
-            ));
-        }, array_combine($services, $services)),
+        'login_paths' => $app['oauth.login_paths'],
         'logout_path' => $app['url_generator']->generate('logout', array(
-            '_csrf_token' => $app['form.csrf_provider']->generateCsrfToken('logout')
+            '_csrf_token' => $app['oauth.csrf_token']('logout')
         ))
     ));
 });
