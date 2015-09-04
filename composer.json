@@ -1,9 +1,9 @@
 {
-    "require": {
-        "silex/silex": "~1.0",
-        "symfony/form": "~2.3",
-        "symfony/security": "~2.3",
-        "twig/twig": ">=1.8,<2.0-dev",
-        "gigablah/silex-oauth": "~0.1"
-    }
+  "require": {
+    "silex/silex": "~1.3,<2.0",
+    "symfony/form": "~2.4,<3.0",
+    "symfony/security": "~2.4,<2.7",
+    "twig/twig": "~1.0",
+    "gigablah/silex-oauth": "~1.3"
+  }
 }

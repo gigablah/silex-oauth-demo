@@ -1,24 +1,34 @@
 <?php
 
-require_once __DIR__.'/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 $app = new Silex\Application();
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+$app['debug'] = true;
+
 $app->register(new Gigablah\Silex\OAuth\OAuthServiceProvider(), array(
     'oauth.services' => array(
-        'facebook' => array(
+        'Facebook' => array(
             'key' => FACEBOOK_API_KEY,
             'secret' => FACEBOOK_API_SECRET,
             'scope' => array('email'),
             'user_endpoint' => 'https://graph.facebook.com/me'
         ),
-        'twitter' => array(
+        'Dropbox' => array(
+            'key' => DROPBOX_API_KEY,
+            'secret' => DROPBOX_API_SECRET,
+            'scope' => array(),
+            'user_endpoint' => 'https://api.dropbox.com/1/account/info'
+        ),
+        'Twitter' => array(
             'key' => TWITTER_API_KEY,
             'secret' => TWITTER_API_SECRET,
             'scope' => array(),
             'user_endpoint' => 'https://api.twitter.com/1.1/account/verify_credentials.json'
         ),
-        'google' => array(
+        'Google' => array(
             'key' => GOOGLE_API_KEY,
             'secret' => GOOGLE_API_SECRET,
             'scope' => array(
@@ -27,7 +37,7 @@ $app->register(new Gigablah\Silex\OAuth\OAuthServiceProvider(), array(
             ),
             'user_endpoint' => 'https://www.googleapis.com/oauth2/v1/userinfo'
         ),
-        'github' => array(
+        'GitHub' => array(
             'key' => GITHUB_API_KEY,
             'secret' => GITHUB_API_SECRET,
             'scope' => array('user:email'),
@@ -44,7 +54,7 @@ $app->register(new Silex\Provider\FormServiceProvider());
 
 // Provides session storage
 $app->register(new Silex\Provider\SessionServiceProvider(), array(
-    'session.storage.save_path' => __DIR__.'/../cache'
+    'session.storage.save_path' => __DIR__ . '/../cache'
 ));
 
 // Provides Twig template engine
@@ -86,21 +96,15 @@ $app->before(function (Symfony\Component\HttpFoundation\Request $request) use ($
 });
 
 $app->get('/', function () use ($app) {
-    $services = array_keys($app['oauth.services']);
-
     return $app['twig']->render('index.twig', array(
-        'login_paths' => array_map(function ($service) use ($app) {
-            return $app['url_generator']->generate('_auth_service', array(
-                'service' => $service,
-                '_csrf_token' => $app['form.csrf_provider']->generateCsrfToken('oauth')
-            ));
-        }, array_combine($services, $services)),
+        'login_paths' => $app['oauth.login_paths'],
         'logout_path' => $app['url_generator']->generate('logout', array(
-            '_csrf_token' => $app['form.csrf_provider']->generateCsrfToken('logout')
+            '_csrf_token' => $app['oauth.csrf_token']('logout')
         ))
     ));
 });
 
-$app->match('/logout', function () {})->bind('logout');
+$app->match('/logout', function () {
+})->bind('logout');
 
 $app->run();
